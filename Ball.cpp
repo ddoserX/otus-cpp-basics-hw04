@@ -7,6 +7,7 @@ Ball::Ball(Velocity velocity, Point center, Color color, double radius, bool isC
     this->center = center;
     this->color = color;
     this->radius = radius;
+    this->mass = M_PI * std::pow(radius, 3) * 3 / 4;
     this->isCollidable = isCollidable;
 }
 
@@ -76,7 +77,7 @@ double Ball::getRadius() const
  */
 double Ball::getMass() const
 {
-    return M_PI * std::pow(radius, 3) * 3 / 4;
+    return mass;
 }
 
 bool Ball::getCollisionState() const

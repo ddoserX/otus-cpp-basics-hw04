@@ -4,10 +4,7 @@
 #include "Painter.hpp"
 #include "Point.hpp"
 #include "Velocity.hpp"
-
-#ifndef _USE_MATH_DEFINES
-#define M_PI 3.14159265358979323846
-#endif
+#include <cmath>
 
 class Ball
 {
@@ -27,5 +24,6 @@ class Ball
     Velocity velocity;
     Point center;
     double radius;
+    double mass;
     bool isCollidable;
 };
