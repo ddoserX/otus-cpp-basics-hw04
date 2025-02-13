@@ -4,7 +4,6 @@
 #include "Painter.hpp"
 #include "Point.hpp"
 #include "Velocity.hpp"
-#include <cmath>
 
 class Ball
 {
