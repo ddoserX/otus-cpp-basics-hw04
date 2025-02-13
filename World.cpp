@@ -19,6 +19,7 @@ World::World(const std::string &worldFilePath)
     readFromStream(stream, topLeft);
     readFromStream(stream, bottomRight);
     physics.setWorldBox(topLeft, bottomRight);
+    physics.setGlobalParticles(particles);
 
     double radius;
     bool isCollidable;
@@ -61,6 +62,11 @@ void World::show(Painter &painter) const
     for (const Ball &ball : balls)
     {
         ball.draw(painter);
+    }
+
+    for (const Particle &particle : particles)
+    {
+        particle.draw(painter);
     }
 }
 

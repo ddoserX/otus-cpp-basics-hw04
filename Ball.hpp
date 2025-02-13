@@ -17,12 +17,25 @@ class Ball
     double getRadius() const;
     double getMass() const;
     bool getCollisionState() const;
+    Color getColor() const;
 
-  private:
+  protected:
     Color color;
     Velocity velocity;
     Point center;
     double radius;
     double mass;
     bool isCollidable;
+};
+
+class Particle : public Ball
+{
+  public:
+    Particle(Velocity velocity, Point center, Color color, double radius, bool isCollidable);
+    Particle(const Ball &ball);
+    void decreaseTTL(double time);
+    bool isLive() const;
+
+  private:
+    double timeToLive;
 };

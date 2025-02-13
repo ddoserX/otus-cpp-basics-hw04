@@ -84,3 +84,30 @@ bool Ball::getCollisionState() const
 {
     return isCollidable;
 }
+
+Color Ball::getColor() const
+{
+    return color;
+}
+
+Particle::Particle(Velocity velocity_, Point center_, Color color_, double radius_, bool isCollidable_)
+    : Ball(velocity_, center_, color_, radius_, isCollidable_)
+{
+    timeToLive = 1000;
+}
+
+Particle::Particle(const Ball &ball)
+    : Ball(ball.getVelocity().vector() * -1, ball.getCenter(), ball.getColor(), ball.getRadius() / 2., false)
+{
+    timeToLive = 1;
+}
+
+void Particle::decreaseTTL(double time)
+{
+    timeToLive -= time;
+}
+
+bool Particle::isLive() const
+{
+    return (timeToLive <= 0) ? false : true;
+}

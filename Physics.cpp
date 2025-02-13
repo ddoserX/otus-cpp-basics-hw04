@@ -7,6 +7,7 @@ double dot(const Point &lhs, const Point &rhs)
 
 Physics::Physics(double timePerTick) : timePerTick{timePerTick}
 {
+    globalParticles = nullptr;
 }
 
 void Physics::setWorldBox(const Point &topLeft, const Point &bottomRight)
@@ -15,12 +16,18 @@ void Physics::setWorldBox(const Point &topLeft, const Point &bottomRight)
     this->bottomRight = bottomRight;
 }
 
+void Physics::setGlobalParticles(std::vector<Particle> &particles)
+{
+    globalParticles = &particles;
+}
+
 void Physics::update(std::vector<Ball> &balls, const size_t ticks) const
 {
 
     for (size_t i = 0; i < ticks; ++i)
     {
         move(balls);
+        move(*globalParticles);
         collideWithBox(balls);
         collideBalls(balls);
     }
@@ -87,8 +94,33 @@ void Physics::move(std::vector<Ball> &balls) const
     }
 }
 
+void Physics::move(std::vector<Particle> &particles) const
+{
+    std::vector<int> ids = {};
+
+    for (size_t i = 0; i < particles.size(); i++)
+    {
+        Point newPos = particles[i].getCenter() + particles[i].getVelocity().vector() * timePerTick;
+        particles[i].setCenter(newPos);
+        particles[i].decreaseTTL(timePerTick);
+
+        if (particles[i].isLive() == false)
+        {
+            ids.push_back(i);
+        }
+    }
+
+    for (size_t i = 0; i < ids.size(); i++)
+    {
+        globalParticles->erase(globalParticles->begin() + ids[i]);
+    }
+}
+
 void Physics::processCollision(Ball &a, Ball &b, double distanceBetweenCenters2) const
 {
+    globalParticles->push_back(a);
+    globalParticles->push_back(b);
+
     // нормированный вектор столкновения
     const Point normal = (b.getCenter() - a.getCenter()) / std::sqrt(distanceBetweenCenters2);
 
